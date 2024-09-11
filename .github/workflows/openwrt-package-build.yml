@@ -1,4 +1,4 @@
-name: Build OpenWrt Package
+name: Build OpenWrt Package2
 
 on:
   push:
