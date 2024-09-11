@@ -22,6 +22,9 @@ jobs:
       with:
         python-version: '3.x'  # Specify the desired Python version
 
+    - name: Clear the files directory
+      run: rm -rf files/*  # Clean the files directory before downloading
+
     - name: Install pip dependencies
       run: |
         python -m pip install --upgrade pip
@@ -36,4 +39,4 @@ jobs:
         git commit -m "Download python-telegram-bot to files/"
         git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
