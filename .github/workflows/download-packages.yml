@@ -22,28 +22,28 @@ jobs:
       with:
         python-version: '3.x'  # Specify the desired Python version
 
-    - name: Force remove files from the 'files' directory
+    - name: Force remove files from the 'root/androgram' directory
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
-        git rm -rf files/*  # Forcefully remove files in the directory
-        git commit -m "Remove old files from files directory"
+        git rm -rf root/androgram/* || true  # Forcefully remove files in the directory if they exist
+        git commit -m "Remove old files from root/androgram directory"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install pip dependencies
+    - name: Install pip dependencies and save to root/androgram
       run: |
         python -m pip install --upgrade pip
-        mkdir -p files/  # Ensure the directory exists
-        pip download python-telegram-bot -d files/
+        mkdir -p root/androgram  # Ensure the directory exists
+        pip download python-telegram-bot -d root/androgram/
 
     - name: Commit and push new downloaded files
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
-        git add files/
-        git commit -m "Download python-telegram-bot to files/"
+        git add root/androgram/
+        git commit -m "Download python-telegram-bot to root/androgram/"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
