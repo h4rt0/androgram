@@ -1,18 +1,19 @@
 name: Build OpenWrt Package
 
 on:
-  #push:
- #   branches:
- #     - main
-  workflow_dispatch:  # Allows manual triggering of the workflow
-
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Install OpenWrt SDK
         run: |
@@ -36,7 +37,7 @@ jobs:
           make package/python-telegram-bot/compile V=s
           
       - name: Upload Package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-telegram-bot
           path: openwrt-sdk/bin/packages/x86_64/
