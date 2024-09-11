@@ -1,4 +1,4 @@
-name: Build OpenWrt Package2
+name: Build OpenWrt Package
 
 on:
   push:
@@ -17,9 +17,9 @@ jobs:
 
       - name: Install OpenWrt SDK
         run: |
-          wget https://downloads.openwrt.org/releases/22.03.0/targets/x86/64/openwrt-sdk-22.03.0-x86-64.tar.xz
-          tar -xf openwrt-sdk-22.03.0-x86-64.tar.xz
-          mv openwrt-sdk-22.03.0-x86-64 openwrt-sdk
+          wget https://downloads.openwrt.org/releases/23.05.0/targets/x86/64/openwrt-sdk-23.05.0-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
+          tar -xf openwrt-sdk-23.05.0-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
+          mv openwrt-sdk-23.05.0-x86-64_gcc-11.2.0_musl.Linux-x86_64 openwrt-sdk
           cd openwrt-sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
