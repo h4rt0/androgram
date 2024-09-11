@@ -1,9 +1,9 @@
 name: Download python-telegram-bot
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+ #   branches:
+ #     - main
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 permissions: 
