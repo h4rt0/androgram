@@ -33,24 +33,25 @@ jobs:
           tar -xf openwrt-sdk.tar.xz
           mv openwrt-sdk-* openwrt-sdk
 
-      # Step 4: Prepare the build environment
+      # Step 4: Set up the OpenWrt build environment
       - name: Set up OpenWrt feeds
         working-directory: openwrt-sdk
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      # Step 5: Copy package Makefile into SDK
-      - name: Add custom python-telegram-bot package
+      # Step 5: Copy package and config file
+      - name: Add custom python-telegram-bot package and config
         run: |
           mkdir -p openwrt-sdk/package/libs/python-telegram-bot
           cp -r ./package/python-telegram-bot/* openwrt-sdk/package/libs/python-telegram-bot/
+          cp ./package-configs/python-telegram-bot-config openwrt-sdk/.config
 
       # Step 6: Build the package
       - name: Build python-telegram-bot package
         working-directory: openwrt-sdk
         run: |
-          make menuconfig  # Optional: Only required to manually configure if needed
+          make defconfig  # Ensures the .config file is processed
           make package/python-telegram-bot/download V=s
           make package/python-telegram-bot/compile V=s
 
@@ -61,4 +62,3 @@ jobs:
           name: python-telegram-bot-packages
           path: |
             openwrt-sdk/bin/packages/*/python-telegram-bot*.ipk
-            
