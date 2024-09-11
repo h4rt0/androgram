@@ -24,8 +24,8 @@ jobs:
 
     - name: Clear the files directory using Git
       run: |
-        git rm -r --cached files/* || true  # Remove tracked files but keep directory
-        rm -rf files/*                      # Remove files in the directory
+        git rm -r --ignore-unmatch files/*  # Remove the tracked files (ignore if no files)
+        rm -rf files/*                      # Remove the files from the local filesystem
 
     - name: Install pip dependencies
       run: |
@@ -33,7 +33,7 @@ jobs:
         mkdir -p files/  # Ensure the directory exists
         pip download python-telegram-bot -d files/
 
-    - name: Commit and push downloaded files
+    - name: Commit and push changes
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
@@ -41,4 +41,4 @@ jobs:
         git commit -m "Download python-telegram-bot to files/"
         git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
