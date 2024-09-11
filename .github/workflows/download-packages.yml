@@ -22,8 +22,10 @@ jobs:
       with:
         python-version: '3.x'  # Specify the desired Python version
 
-    - name: Clear the files directory
-      run: rm -rf files/*  # Clean the files directory before downloading
+    - name: Clear the files directory using Git
+      run: |
+        git rm -r --cached files/* || true  # Remove tracked files but keep directory
+        rm -rf files/*                      # Remove files in the directory
 
     - name: Install pip dependencies
       run: |
