@@ -1,0 +1,64 @@
+name: Build OpenWrt Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      OPENWRT_SDK_URL: https://downloads.openwrt.org/releases/22.03.5/targets/x86/64/openwrt-sdk-22.03.5-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
+      TARGET: x86_64  # Change this to the architecture you are targeting
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install dependencies
+      - name: Install required packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libncurses5-dev gawk git wget unzip python3-pip
+
+      # Step 3: Download OpenWrt SDK
+      - name: Download OpenWrt SDK
+        run: |
+          wget $OPENWRT_SDK_URL -O openwrt-sdk.tar.xz
+          tar -xf openwrt-sdk.tar.xz
+          mv openwrt-sdk-* openwrt-sdk
+
+      # Step 4: Prepare the build environment
+      - name: Set up OpenWrt feeds
+        working-directory: openwrt-sdk
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      # Step 5: Copy package Makefile into SDK
+      - name: Add custom python-telegram-bot package
+        run: |
+          mkdir -p openwrt-sdk/package/libs/python-telegram-bot
+          cp -r ./package/python-telegram-bot/* openwrt-sdk/package/libs/python-telegram-bot/
+
+      # Step 6: Build the package
+      - name: Build python-telegram-bot package
+        working-directory: openwrt-sdk
+        run: |
+          make menuconfig  # Optional: Only required to manually configure if needed
+          make package/python-telegram-bot/download V=s
+          make package/python-telegram-bot/compile V=s
+
+      # Step 7: Upload artifacts (compiled packages)
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-telegram-bot-packages
+          path: |
+            openwrt-sdk/bin/packages/*/python-telegram-bot*.ipk
+            
