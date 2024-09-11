@@ -1,12 +1,11 @@
 name: Build OpenWrt Package
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  #push:
+ #   branches:
+ #     - main
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
 
 jobs:
   build:
