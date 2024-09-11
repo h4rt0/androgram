@@ -1,29 +1,33 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=python-telegram-bot
-PKG_VERSION:=20.5
+PKG_VERSION:=13.7
 PKG_RELEASE:=1
 
 PYPI_NAME:=python-telegram-bot
-PKG_HASH:=$(shell pip download $(PYPI_NAME)==$(PKG_VERSION) --no-deps --no-binary :all: -q -O - | sha256sum | awk '{print $$1}')
+PKG_SOURCE:=$(PYPI_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://files.pythonhosted.org/packages/source/p/$(PYPI_NAME)/
+PKG_HASH:=skip
 
-PKG_MAINTAINER:=Your Name <your.email@example.com>
-PKG_LICENSE:=GPL-3.0
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PYPI_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-include ../pypi.mk
+include ../python-package.mk
 
 define Package/python-telegram-bot
   SECTION:=lang
   CATEGORY:=Languages
-  TITLE:=Python Telegram Bot Library
-  URL:=https://python-telegram-bot.org/
+  SUBMENU:=Python
+  TITLE:=python-telegram-bot library
   DEPENDS:=+python3 +python3-pip
 endef
 
 define Package/python-telegram-bot/description
-  python-telegram-bot is a Python wrapper for the Telegram Bot API.
+  A python wrapper to interact with Telegram Bot API
 endef
 
-$(eval $(call Py3Package,python-telegram-bot))
+define Build/Compile
+  $(call Build/Compile/Py3Mod,.,install --prefix="/usr" --root=$(PKG_INSTALL_DIR))
+endef
+
 $(eval $(call BuildPackage,python-telegram-bot))
