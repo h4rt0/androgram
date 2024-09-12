@@ -31,20 +31,20 @@ jobs:
     - name: Clone luci-app-tailscale
       run: |
         cd openwrt-sdk/package
-        git clone --depth 1 --branch main https://github.com/h4rt0/androgram.git python-telegram-bot
+        git clone --depth 1 --branch main https://github.com/h4rt0/androgram.git python3-iperf3
 
     - name: Configure build
       run: |
         cd openwrt-sdk
         make defconfig
         # Select the package LuCI -> Applications -> luci-app-tinyfilemanager
-        echo "CONFIG_PACKAGE_python-telegram-bot=y" >> .config
+        echo "CONFIG_PACKAGE_python3-iperf3=y" >> .config
         make defconfig
 
     - name: Compile luci-app-tailscale
       run: |
         cd openwrt-sdk
-        make package/python-telegram-bot/compile V=99
+        make package/python3-iperf3/compile V=99
 
     - name: List compiled files
       run: |
