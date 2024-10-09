@@ -26,8 +26,8 @@ jobs:
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
-        git rm -rf root/androgram/* || true  # Forcefully remove files in the directory if they exist
-        git commit -m "Remove old files from root/androgram directory"
+        git rm -rf files/root/androgram/* || true  # Forcefully remove files in the directory if they exist
+        git commit -m "Remove old files from files/root/androgram directory"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
