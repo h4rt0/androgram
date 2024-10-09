@@ -36,14 +36,14 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         mkdir -p root/androgram  # Ensure the directory exists
-        pip download python-telegram-bot -d root/androgram/
+        pip download python-telegram-bot -d files/root/androgram/
 
     - name: Commit and push new downloaded files
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
-        git add root/androgram/
-        git commit -m "Download python-telegram-bot to root/androgram/"
+        git add files/root/androgram/
+        git commit -m "Download python-telegram-bot to files/root/androgram/"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
